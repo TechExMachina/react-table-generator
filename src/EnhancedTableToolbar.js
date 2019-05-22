@@ -1,5 +1,4 @@
 import React from 'react'
-import { Random } from 'meteor/random'
 
 import TextField from '@material-ui/core/TextField'
 import Toolbar from '@material-ui/core/Toolbar'
@@ -13,7 +12,7 @@ import MenuItem from '@material-ui/core/MenuItem'
 import Badge from '@material-ui/core/Badge'
 import Popover from '@material-ui/core/Popover'
 
-import { toolbarStyles } from './style'
+import { toolbarStyles } from '../style'
 
 class EnhancedTableToolbar extends React.Component {
   constructor(props) {
@@ -30,12 +29,10 @@ class EnhancedTableToolbar extends React.Component {
 
     this.state = {
       anchorEl: null,
-      filtersSelected: filtersSelected
+      filtersSelected: filtersSelected,
     }
 
-    props.onFilter &&
-      Object.keys(filtersSelected).length > 0 &&
-      props.onFilter(filtersSelected)
+    props.onFilter && Object.keys(filtersSelected).length > 0 && props.onFilter(filtersSelected)
   }
 
   handleClickFilters = event => {
@@ -55,7 +52,7 @@ class EnhancedTableToolbar extends React.Component {
     filtersSelected[target] = [
       ...value.map(item => {
         return !!item.value || item.value === false ? item.value : item
-      })
+      }),
     ]
     this.setState({ filtersSelected })
 
@@ -72,6 +69,12 @@ class EnhancedTableToolbar extends React.Component {
     this.handleClose()
   }
 
+  randomId = () =>
+    '_' +
+    Math.random()
+      .toString(36)
+      .substr(2, 9)
+
   render() {
     const {
       filters,
@@ -82,7 +85,7 @@ class EnhancedTableToolbar extends React.Component {
       handleRequestFilter,
       columnsCanSearch,
       numberFiltersActive,
-      columns
+      columns,
     } = this.props
     const { anchorEl, filtersSelected } = this.state
     return (
@@ -107,7 +110,7 @@ class EnhancedTableToolbar extends React.Component {
                   display: 'flex',
                   flexDirection: 'row',
                   justifyContent: 'space-between',
-                  alignItems: 'center'
+                  alignItems: 'center',
                 }}
               >
                 {filtersBar.map(filter => {
@@ -124,9 +127,7 @@ class EnhancedTableToolbar extends React.Component {
                         >
                           {filter.values.map(item => (
                             <MenuItem
-                              key={
-                                !!item.value ? item.value : item || Random.id()
-                              }
+                              key={!!item.value ? item.value : item || this.randomId()}
                               value={!!item.value ? item.value : item}
                             >
                               {!!item.label ? item.label : item}
@@ -173,11 +174,11 @@ class EnhancedTableToolbar extends React.Component {
                 onClose={this.handleClose}
                 anchorOrigin={{
                   vertical: 'bottom',
-                  horizontal: 'center'
+                  horizontal: 'center',
                 }}
                 transformOrigin={{
                   vertical: 'top',
-                  horizontal: 'center'
+                  horizontal: 'center',
                 }}
               >
                 <div className={classes.popContainer}>
@@ -185,18 +186,14 @@ class EnhancedTableToolbar extends React.Component {
                     style={{
                       display: 'flex',
                       justifyContent: 'space-between',
-                      alignItems: 'center'
+                      alignItems: 'center',
                     }}
                   >
                     <div>
                       <b>Filters...</b>
                     </div>
 
-                    <Button
-                      color="secondary"
-                      onClick={this.resetFilters}
-                      variant="text"
-                    >
+                    <Button color="secondary" onClick={this.resetFilters} variant="text">
                       reset
                     </Button>
                   </div>
@@ -214,7 +211,7 @@ class EnhancedTableToolbar extends React.Component {
                           fullWidth
                         >
                           {filters[filter].map(item => (
-                            <MenuItem key={item || Random.id()} value={item}>
+                            <MenuItem key={item || this.randomId()} value={item}>
                               {item}
                             </MenuItem>
                           ))}
