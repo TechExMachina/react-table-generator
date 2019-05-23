@@ -94,11 +94,11 @@ class EnhancedTableToolbar extends React.Component {
       <Toolbar className={classes.root}>
         <div className={classes.title}>
           {numSelected > 0 ? (
-            <Typography color="inherit" variant="subheading">
+            <Typography color="inherit" variant="subtitle1">
               {numSelected} selected
             </Typography>
           ) : typeof title === 'string' ? (
-            <Typography variant="title">{title}</Typography>
+            <Typography variant="h6">{title}</Typography>
           ) : (
             title
           )}
