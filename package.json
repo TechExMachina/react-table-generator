@@ -1,12 +1,12 @@
 {
   "name": "react-table-generator",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "A material-ui based modular table generator",
   "main": "build/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack --watch",
-    "build": "webpack"
+    "build": "cross-env NODE_ENV=production webpack -p"
   },
   "repository": {
     "type": "git",
@@ -28,18 +28,11 @@
   "peerDependencies": {
     "@material-ui/core": "^3.9.3",
     "@material-ui/icons": "^3.0.2",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6",
-    "moment": "^2.24.0"
+    "react": "^16.8.6"
   },
   "dependencies": {
-    "@material-ui/core": "^3.9.3",
-    "@material-ui/icons": "^3.0.2",
     "moment": "^2.24.0",
-    "prop-types": "^15.5.8",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6",
-    "webpack": "^2.6.1"
+    "prop-types": "^15.5.8"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.4",
@@ -48,7 +41,14 @@
     "@babel/plugin-transform-react-jsx": "^7.3.0",
     "@babel/preset-env": "^7.4.5",
     "@babel/preset-react": "^7.0.0",
+    "@material-ui/core": "^3.9.3",
+    "@material-ui/icons": "^3.0.2",
     "babel-loader": "^8.0.6",
-    "prettier": "^1.17.1"
+    "cross-env": "^5.2.0",
+    "prettier": "^1.17.1",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "webpack": "^4.32.2",
+    "webpack-cli": "^3.3.2"
   }
 }
