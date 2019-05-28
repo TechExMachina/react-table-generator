@@ -118,11 +118,12 @@ class EnhancedTable extends Component {
     super(props)
 
     let orderBy = 0
+    let order = 'desc'
     if (props.columns.find(c => c.defaultSort)) {
-      orderBy = props.columns.find(c => c.defaultSort).property
+      const columnDefaultSort = props.columns.find(c => !!c.defaultSort)
+      orderBy = columnDefaultSort.property
+      order = columnDefaultSort.defaultSort
     }
-
-    const order = 'desc'
 
     this.state = {
       order,
@@ -157,7 +158,7 @@ class EnhancedTable extends Component {
     })
   }
 
-  getCellContent = (col, entry) => {
+  getCellContent = (col, entry, forFilters = false) => {
     const { formatDisplay } = this.props
 
     if (
@@ -167,7 +168,14 @@ class EnhancedTable extends Component {
     ) {
       return moment(entry[col.property].toISOString()).format(col.format || 'DD/MM/YYYY')
     } else if (typeof entry[col.property] === 'boolean') {
+      if (forFilters) return entry[col.property].toString()
       return entry[col.property] ? <IconCheck /> : <IconClose />
+    } else if (
+      typeof entry[col.property] === 'object' &&
+      Array.isArray(entry[col.property]) &&
+      col.property !== 'actions'
+    ) {
+      return entry[col.property].join(', ')
     } else if (typeof col === 'string') {
       return entry[col]
     } else if (typeof col.property === 'string' && !col.as) {
@@ -195,7 +203,7 @@ class EnhancedTable extends Component {
     let filtersValues = {}
     if (filters.length > 0) {
       filters.forEach(filter => {
-        const values = data.map(entry => this.getCellContent(filter, entry))
+        const values = data.map(entry => this.getCellContent(filter, entry, true))
         filtersValues[filter.property] = [...new Set(values)]
       })
     }
@@ -213,7 +221,8 @@ class EnhancedTable extends Component {
     let pass = true
     Object.keys(filtersApply).forEach(filter => {
       if (filtersApply[filter] && filtersApply[filter].length === 0) return
-      if (!filtersApply[filter].includes(data[filter])) pass = false
+      if (!filtersApply[filter].includes(this.getCellContent({ property: filter }, data, true)))
+        pass = false
     })
 
     return pass
